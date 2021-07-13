@@ -11,7 +11,6 @@ import (
 )
 
 func ConnectDB(mongoDBCollection string) (*mongo.Collection, error) {
-	// init config
 	config := config.InitConfig()
 
 	MongoDBUrl := "mongodb://" + config.MongoDBHost + ":" + config.MongoDBPort

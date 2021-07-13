@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"db"
+	"fmt"
 	"log"
 	"net/http"
 	"strconv"
@@ -29,6 +30,30 @@ type Datas struct {
 }
 
 /*
+마지막날 계산
+*/
+func getLastDay(year, month string) string {
+	lastDayMap := map[int]string{
+		1: "31", 2: "28",
+		3: "31", 4: "30",
+		5: "31", 6: "30",
+		7: "31", 8: "31",
+		9: "30", 10: "31",
+		11: "30", 12: "31",
+	}
+
+	tempYear, _ := strconv.Atoi(year)
+	tempMonth, _ := strconv.Atoi(month)
+
+	// 2월의 경우 윤년 계산
+	if tempMonth == 2 && ((tempYear%4 == 0 && tempYear%100 != 0) || tempYear%400 == 0) {
+		lastDayMap[tempMonth] = "29"
+	}
+
+	return lastDayMap[tempMonth]
+}
+
+/*
  일별 합계
 */
 func depositDailyList(c *gin.Context) {
@@ -39,7 +64,7 @@ func depositDailyList(c *gin.Context) {
 
 	year := c.Query("year")
 	month := c.Query("month")
-	
+
 	if strings.ReplaceAll(year, " ", "") == "" || strings.ReplaceAll(month, " ", "") == "" {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": "invalid_request",
@@ -48,10 +73,12 @@ func depositDailyList(c *gin.Context) {
 	}
 
 	date := year + month
+	lastDay := getLastDay(year, month)
 
-	filter := bson.D{
-		{"resdepositdate", bson.D{{"$gte", date + "01"}}},
-		{"resdepositdate", bson.D{{"$lte", date + "31"}}},
+	fmt.Println("lastDay : ", lastDay)
+
+	filter := bson.M{
+		"resdepositdate": bson.M{"$gte": date + "01", "$lte": date + lastDay},
 	}
 
 	cursor, err := client.Find(context.Background(), filter)
@@ -102,6 +129,7 @@ func depositDailyList(c *gin.Context) {
 */
 func depositDailyDetail(c *gin.Context) {
 	client, err := db.ConnectDB("testStore")
+
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -115,8 +143,8 @@ func depositDailyDetail(c *gin.Context) {
 		return
 	}
 
-	filter := bson.D{
-		{"resdepositdate", date},
+	filter := bson.M{
+		"resdepositdate": date,
 	}
 
 	cursor, err := client.Find(context.Background(), filter)
