@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"db"
-	"fmt"
 	"log"
 	"net/http"
 	"strconv"
@@ -74,8 +73,6 @@ func depositDailyList(c *gin.Context) {
 
 	date := year + month
 	lastDay := getLastDay(year, month)
-
-	fmt.Println("lastDay : ", lastDay)
 
 	filter := bson.M{
 		"resdepositdate": bson.M{"$gte": date + "01", "$lte": date + lastDay},
