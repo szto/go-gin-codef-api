@@ -73,40 +73,25 @@
 }
 ```
 
-###  URI : [GET] /storestatus
+###  URI : [GET] /business/status
  - description
    - 사업자번호로 휴폐업 상태 조회
  - request
-   - query string
-     - parameter : identity
-     - 단건 : 1122334455
-     - 다건 : 1122334455,2222334455
-   - 예시 : /storestatus?identity=1122334455,2222334455
+   - query string : biz_number
+   - 예시 : /business/status?biz_number=112-23-34455
  - response
 ```
 {
-    "data": [
-        {
-            "code": "CF-00000",
-            "extraMessage": "",
-            "message": "성공",
-            "resBusinessStatus": "부가가치세 일반과세자 입니다.",
-            "resClosingDate": "",
-            "resCompanyIdentityNo": "1122334455",
-            "resTaxationTypeCode": "1",
-            "resTransferTaxTypeDate": ""
-        },
-        {
-            "code": "CF-00000",
-            "extraMessage": "",
-            "message": "성공",
-            "resBusinessStatus": "부가가치세 일반과세자 입니다.",
-            "resClosingDate": "",
-            "resCompanyIdentityNo": "2222334455",
-            "resTaxationTypeCode": "1",
-            "resTransferTaxTypeDate": ""
-        }
-    ],
+    "data": {
+        "code": "CF-00000",
+        "extraMessage": "",
+        "message": "성공",
+        "resBusinessStatus": "부가가치세 일반과세자 입니다.",
+        "resClosingDate": "",
+        "resCompanyIdentityNo": "1122334455",
+        "resTaxationTypeCode": "1",
+        "resTransferTaxTypeDate": ""
+    },
     "message": "success"
 }
 ```

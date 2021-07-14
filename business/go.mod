@@ -1,4 +1,4 @@
-module storestatus
+module business
 
 go 1.16
 

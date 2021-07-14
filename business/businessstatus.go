@@ -1,4 +1,4 @@
-package storestatus
+package business
 
 import (
 	"codef"
@@ -15,41 +15,39 @@ type Datas struct {
 	Result map[string]string
 }
 
-const CLOSE_STORE_END_POINT = "/v1/kr/public/nt/business/status"
+const BUSINESS_STATUS_END_POINT = "/v1/kr/public/nt/business/status"
 const TYPE_DEMO = 1
 const CODEF_SUCCESS_CODE = "CF-00000"
 
-func GetCloseStoreInfo(c *gin.Context) {
+func GetBusinessStatus(c *gin.Context) {
 	var datas Datas
 
-	identity := c.Query("identity")
+	bizNumber := c.Query("biz_number")
+	bizNumber = strings.ReplaceAll(bizNumber, "-", "")
 
-	if strings.ReplaceAll(identity, " ", "") == "" {
+	if strings.ReplaceAll(bizNumber, " ", "") == "" {
 		datas.Data = []map[string]string{}
-		c.JSON(http.StatusOK, gin.H{
+		c.JSON(http.StatusBadRequest, gin.H{
 			"message": "invalid_request",
 			"data":    datas.Data,
 		})
 		return
 	}
 
-	codef := codef.GetCodef()                    // codef instance 받아오기
-	identityList := strings.Split(identity, ",") // 파라미터가 다건일 경우 분리
+	codef := codef.GetCodef() // codef instance 받아오기
 	reqData := []map[string]string{}
 
-	// codef 요청 데이터 생성
-	for _, v := range identityList {
-		tempMap := map[string]string{}
-		tempMap["reqIdentity"] = v
-		reqData = append(reqData, tempMap)
-	}
+	tempMap := map[string]string{}
+	tempMap["reqIdentity"] = bizNumber
+
+	reqData = append(reqData, tempMap)
 
 	parameter := map[string]interface{}{
 		"organization":    "0004",
 		"reqIdentityList": reqData,
 	}
 
-	codefResult, err := codef.RequestProduct(CLOSE_STORE_END_POINT, TYPE_DEMO, parameter)
+	codefResult, err := codef.RequestProduct(BUSINESS_STATUS_END_POINT, TYPE_DEMO, parameter)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -69,8 +67,18 @@ func GetCloseStoreInfo(c *gin.Context) {
 		return
 	}
 
+	// index error 방지용
+	if len(datas.Data) <= 0 {
+		datas.Data = []map[string]string{}
+		c.JSON(http.StatusOK, gin.H{
+			"message": "result_empty",
+			"data":    datas.Data,
+		})
+		return
+	}
+
 	c.JSON(http.StatusOK, gin.H{
 		"message": "success",
-		"data":    datas.Data,
+		"data":    datas.Data[0],
 	})
 }

@@ -3,6 +3,7 @@ module main
 go 1.16
 
 require (
+	business v0.0.0
 	deposit v0.0.0
 	github.com/gin-gonic/gin v1.7.2
 	github.com/go-playground/validator/v10 v10.7.0 // indirect
@@ -22,13 +23,12 @@ require (
 	golang.org/x/text v0.3.6 // indirect
 	google.golang.org/protobuf v1.27.1 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
-	storestatus v0.0.0
 )
 
 replace (
+	business v0.0.0 => ./business
 	codef v0.0.0 => ./codef
 	config v0.0.0 => ./config
 	db v0.0.0 => ./db
 	deposit v0.0.0 => ./deposit
-	storestatus v0.0.0 => ./storestatus
 )
