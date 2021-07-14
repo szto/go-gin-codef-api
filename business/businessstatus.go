@@ -20,6 +20,14 @@ const TYPE_DEMO = 1
 const CODEF_SUCCESS_CODE = "CF-00000"
 const ORGANIZATION_CODE = "0004"
 
+func generateErrorMsg(errmsgMap map[string]string) string {
+	msg := "codef_error : " +
+		errmsgMap["code"] + ", " +
+		errmsgMap["message"]
+
+	return msg
+}
+
 func GetBusinessStatus(c *gin.Context) {
 	var datas Datas
 
@@ -27,21 +35,18 @@ func GetBusinessStatus(c *gin.Context) {
 	bizNumber = strings.ReplaceAll(bizNumber, "-", "")
 
 	if strings.ReplaceAll(bizNumber, " ", "") == "" {
-		datas.Data = []map[string]string{}
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": "invalid_request",
-			"data":    datas.Data,
+			"data":    map[string]string{},
 		})
 		return
 	}
 
 	codef := codef.GetCodef() // codef instance 받아오기
-	reqData := []map[string]string{}
 
-	tempMap := map[string]string{}
-	tempMap["reqIdentity"] = bizNumber
-
-	reqData = append(reqData, tempMap)
+	reqData := []map[string]string{
+		{"reqIdentity": bizNumber},
+	}
 
 	parameter := map[string]interface{}{
 		"organization":    ORGANIZATION_CODE,
@@ -56,24 +61,20 @@ func GetBusinessStatus(c *gin.Context) {
 	json.Unmarshal([]byte(codefResult), &datas)
 
 	if datas.Result["code"] != CODEF_SUCCESS_CODE {
-		errorMsg := "codef_error : " +
-			datas.Result["code"] + ", " +
-			datas.Result["message"]
+		errorMsg := generateErrorMsg(datas.Result)
 
-		datas.Data = []map[string]string{}
 		c.JSON(http.StatusServiceUnavailable, gin.H{
 			"message": errorMsg,
-			"data":    datas.Data,
+			"data":    map[string]string{},
 		})
 		return
 	}
 
 	// index error 방지용
-	if len(datas.Data) <= 0 {
-		datas.Data = []map[string]string{}
+	if datas.Data == nil || len(datas.Data) <= 0 {
 		c.JSON(http.StatusOK, gin.H{
 			"message": "result_empty",
-			"data":    datas.Data,
+			"data":    map[string]string{},
 		})
 		return
 	}
