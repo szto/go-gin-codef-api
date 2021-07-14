@@ -2,7 +2,7 @@
 일자별, 카드사별 입금내역을 받아오는 API 서버
 
 # ENDPOINT
-### URI : /deposit
+### URI : [GET] /deposit
  - request
    - query string : year, month
    - 예시 : /deposit?year=2021&month=05
@@ -42,7 +42,7 @@
 }
 ```
 
-### URI :  /deposit
+### URI : [GET] /deposit
  - request
    - path parameter : date
    - 예시 : /deposit/20210513
