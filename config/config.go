@@ -13,8 +13,6 @@ type Config struct {
 	CodefPublicKey    string
 	CodefClientId     string
 	CodefClientSecret string
-	CrefiaId          string
-	CrefiaPassword    string
 }
 
 func InitConfig() Config {
@@ -27,7 +25,5 @@ func InitConfig() Config {
 		CodefPublicKey:    os.Getenv("CODEF_PUBLIC_KEY"),
 		CodefClientId:     os.Getenv("CODEF_CLIENT_ID"),
 		CodefClientSecret: os.Getenv("CODEF_CLIENT_SECRET"),
-		CrefiaId:          os.Getenv("CREFIA_ID"),
-		CrefiaPassword:    os.Getenv("CREFIA_PASSWORD"),
 	}
 }
