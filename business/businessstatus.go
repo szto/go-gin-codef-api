@@ -18,6 +18,7 @@ type Datas struct {
 const BUSINESS_STATUS_END_POINT = "/v1/kr/public/nt/business/status"
 const TYPE_DEMO = 1
 const CODEF_SUCCESS_CODE = "CF-00000"
+const ORGANIZATION_CODE = "0004"
 
 func GetBusinessStatus(c *gin.Context) {
 	var datas Datas
@@ -43,7 +44,7 @@ func GetBusinessStatus(c *gin.Context) {
 	reqData = append(reqData, tempMap)
 
 	parameter := map[string]interface{}{
-		"organization":    "0004",
+		"organization":    ORGANIZATION_CODE,
 		"reqIdentityList": reqData,
 	}
 
