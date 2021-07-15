@@ -1,4 +1,4 @@
-package deposit
+package utils
 
 import (
 	"context"
@@ -35,7 +35,7 @@ type Datas struct {
 /*
 마지막날 계산
 */
-func getLastDay(year, month string) string {
+func GetLastDay(year, month string) string {
 	lastDayMap := map[int]string{
 		1: "31", 2: "28",
 		3: "31", 4: "30",
@@ -59,7 +59,7 @@ func getLastDay(year, month string) string {
 /*
 입금내역 합산
 */
-func getDepositSum(depositKind string, cursor *mongo.Cursor) (map[string]map[string]int, int) {
+func GetDepositSum(depositKind string, cursor *mongo.Cursor) (map[string]map[string]int, int) {
 	dataMap := map[string]map[string]int{}
 	var totalAmount int
 

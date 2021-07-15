@@ -1,7 +1,7 @@
 package codef
 
 import (
-	"go-gin-codef-api/config"
+	"go-gin-codef-api/src/config"
 
 	ecg "github.com/codef-io/easycodefgo"
 )

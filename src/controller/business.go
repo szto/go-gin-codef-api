@@ -1,35 +1,22 @@
-package business
+package controller
 
 import (
 	"encoding/json"
-	"go-gin-codef-api/codef"
+	"github.com/gin-gonic/gin"
+	"go-gin-codef-api/src/codef"
+	"go-gin-codef-api/src/http/response"
 	"log"
 	"net/http"
 	"strings"
-
-	"github.com/gin-gonic/gin"
 )
 
-type Datas struct {
-	Data   []map[string]string
-	Result map[string]string
-}
-
+const ORGANIZATION_CODE = "0004"
 const BUSINESS_STATUS_END_POINT = "/v1/kr/public/nt/business/status"
 const TYPE_DEMO = 1
 const CODEF_SUCCESS_CODE = "CF-00000"
-const ORGANIZATION_CODE = "0004"
-
-func generateErrorMsg(errmsgMap map[string]string) string {
-	msg := "codef_error : " +
-		errmsgMap["code"] + ", " +
-		errmsgMap["message"]
-
-	return msg
-}
 
 func GetBusinessStatus(c *gin.Context) {
-	var datas Datas
+	var datas codef.CodefDatas
 
 	bizNumber := c.Query("biz_number")
 	bizNumber = strings.ReplaceAll(bizNumber, "-", "")
@@ -61,7 +48,7 @@ func GetBusinessStatus(c *gin.Context) {
 	json.Unmarshal([]byte(codefResult), &datas)
 
 	if datas.Result["code"] != CODEF_SUCCESS_CODE {
-		errorMsg := generateErrorMsg(datas.Result)
+		errorMsg := response.GenerateErrorMsg(datas.Result)
 
 		c.JSON(http.StatusServiceUnavailable, gin.H{
 			"message": errorMsg,
