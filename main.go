@@ -1,8 +1,8 @@
 package main
 
 import (
-	business "go-gin-codef-api/business"
-	deposit "go-gin-codef-api/deposit"
+	"go-gin-codef-api/business"
+	"go-gin-codef-api/deposit"
 
 	"github.com/gin-gonic/gin"
 )

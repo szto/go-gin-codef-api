@@ -2,7 +2,7 @@ package business
 
 import (
 	"encoding/json"
-	codef "go-gin-codef-api/codef"
+	"go-gin-codef-api/codef"
 	"log"
 	"net/http"
 	"strings"

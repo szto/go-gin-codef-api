@@ -2,7 +2,7 @@ package deposit
 
 import (
 	"context"
-	db "go-gin-codef-api/db"
+	"go-gin-codef-api/db"
 	"log"
 	"net/http"
 	"strings"

@@ -2,7 +2,7 @@ package db
 
 import (
 	"context"
-	config "go-gin-codef-api/config"
+	"go-gin-codef-api/config"
 	"log"
 
 	"go.mongodb.org/mongo-driver/mongo"
