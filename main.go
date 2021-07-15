@@ -1,7 +1,8 @@
 package main
 
 import (
-	"deposit"
+	"go-gin-codef-api/business"
+	"go-gin-codef-api/deposit"
 
 	"github.com/gin-gonic/gin"
 )
@@ -13,6 +14,11 @@ func main() {
 	{
 		depositGet.GET("", deposit.GetDepositDailyList)
 		depositGet.GET("/:date", deposit.GetDepositDailyDetail)
+	}
+
+	businessGet := r.Group("/business")
+	{
+		businessGet.GET("/status", business.GetBusinessStatus)
 	}
 
 	r.Run()
