@@ -1,8 +1,8 @@
 package business
 
 import (
-	"codef"
 	"encoding/json"
+	codef "go-gin-codef-api/codef"
 	"log"
 	"net/http"
 	"strings"

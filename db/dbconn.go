@@ -1,8 +1,8 @@
 package db
 
 import (
-	"config"
 	"context"
+	config "go-gin-codef-api/config"
 	"log"
 
 	"go.mongodb.org/mongo-driver/mongo"
